@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | Rapzmodz Official</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(145deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .powered-by {
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+        
+        .brand {
+            font-size: 24px;
+            font-weight: 800;
+            color: #00ff9d;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
+        }
+        
+        /* Welcome Section dengan animasi */
+        .welcome-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .welcome-icon {
+            font-size: 3.5rem;
+            color: #00ff9d;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .typing-container {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            text-align: center;
+            opacity: 0;
+            animation: slideIn 1s forwards;
+            animation-delay: 0.5s;
+        }
+        
+        .welcome-text {
+            font-size: 1.1rem;
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: slideIn 1s forwards;
+            animation-delay: 1s;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Button Styles dengan animasi */
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(90deg, #00ff9d 0%, #00b8ff 100%);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.3);
+            opacity: 0;
+            animation: slideIn 1s forwards;
+            animation-delay: 1.5s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 255, 157, 0.5);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: 0 4px 15px rgba(0, 255, 157, 0.3) !important;
+        }
+        
+        /* Payment Section dengan animasi masuk */
+        .payment-section, .confirm-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        /* Payment Options dengan efek hover */
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .payment-option {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        
+        .payment-option:hover {
+            border-color: #00ff9d;
+            background: rgba(0, 255, 157, 0.05);
+            transform: translateY(-5px);
+        }
+        
+        .payment-option.selected {
+            border-color: #00ff9d;
+            background: rgba(0, 255, 157, 0.08);
+            transform: translateY(-3px);
+        }
+        
+        .payment-option.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-option.disabled:hover {
+            transform: none;
+            border-color: transparent;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .payment-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Logo */
+        .dana-icon {
+            color: #00d1ff;
+        }
+        
+        .qris-icon {
+            color: #ff4757;
+        }
+        
+        .gopay-icon {
+            color: #00d166;
+        }
+        
+        .payment-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .payment-desc {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
+        /* QRIS Container dengan info jam kerja */
+        .qris-container {
+            margin: 15px auto;
+            width: 180px;
+            height: 180px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            padding: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .qris-container:hover {
+            transform: scale(1.05);
+            border-color: #00ff9d;
+        }
+        
+        .qris-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* QRIS Jam Kerja Info */
+        .qris-time-info {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 15px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .qris-time-info i {
+            color: #ff4757;
+            margin-right: 5px;
+        }
+        
+        .qris-time-info p {
+            color: #ff6b81;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin: 3px 0;
+        }
+        
+        .qris-time-info .current-time {
+            color: #00ff9d;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        /* QRIS Modal/Popup LEBIH BESAR */
+        .qris-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .qris-modal-content {
+            background: #fff;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 95%;
+            max-height: 95%;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        /* QRIS LEBIH BESAR (600px) */
+        .qris-modal-img {
+            max-width: 600px;
+            max-height: 600px;
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 3px solid #00ff9d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+        }
+        
+        .close-modal:hover {
+            background: #ff2e43;
+            transform: scale(1.1);
+        }
+        
+        /* Payment Number */
+        .payment-number {
+            font-size: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: #00ff9d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+        }
+        
+        .number-display {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        
+        .copy-btn {
+            background: rgba(0, 255, 157, 0.15);
+            border: none;
+            color: #00ff9d;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(0, 255, 157, 0.25);
+            transform: scale(1.05);
+        }
+        
+        .copy-btn.copied {
+            background: rgba(0, 255, 157, 0.3);
+            color: #fff;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+        
+        .amount-label-icon {
+            color: #00d1ff;
+        }
+        
+        .amount-input-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .amount-input-container input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        
+        .amount-input-container input:focus {
+            outline: none;
+            border-color: #00ff9d;
+            box-shadow: 0 0 0 2px rgba(0, 255, 157, 0.1);
+        }
+        
+        .rp-symbol {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-weight: 600;
+            pointer-events: none;
+        }
+        
+        .formatted-amount {
+            margin-top: 10px;
+            color: #00ff9d;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            display: none;
+            font-family: 'Consolas', 'Monaco', monospace;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Confirm Section */
+        .confirm-section {
+            text-align: center;
+        }
+        
+        .confirm-icon {
+            font-size: 4rem;
+            color: #00ff9d;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+        
+        .confirm-message {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.7;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .payment-summary {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .summary-label {
+            color: #aaa;
+            font-weight: 500;
+        }
+        
+        .summary-value {
+            color: #00ff9d;
+            font-weight: 600;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        
+        /* Footer dengan sosial media */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .footer-powered {
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        
+        .social-media {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px) scale(1.1);
+        }
+        
+        .discord { background: #5865F2; }
+        .telegram { background: #0088cc; }
+        .whatsapp { background: #25D366; }
+        .instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D); }
+        .twitter { background: #1DA1F2; }
+        .youtube { background: #FF0000; }
+        
+        .copyright {
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        /* Animasi transisi section */
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+            
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-section, .confirm-section {
+                padding: 20px;
+            }
+            
+            /* QRIS Modal responsive */
+            .qris-modal-img {
+                max-width: 90vw;
+                max-height: 90vw;
+            }
+            
+            .payment-number {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .social-media {
+                gap: 15px;
+            }
+            
+            .social-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+          /* ================= MODERN ALERT ================= */
+.alert-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    animation:fadeIn .3s ease;
+}
+.alert-box{
+    background:linear-gradient(145deg,#0f2027,#203a43,#2c5364);
+    border-radius:16px;
+    padding:25px 30px;
+    width:90%;
+    max-width:380px;
+    text-align:center;
+    box-shadow:0 0 25px rgba(0,255,157,.35);
+    animation:scaleIn .3s ease;
+}
+.alert-box i{
+    font-size:3rem;
+    color:#00ff9d;
+    margin-bottom:15px;
+}
+.alert-box h3{
+    color:#fff;
+    margin-bottom:10px;
+}
+.alert-box p{
+    color:#ccc;
+    font-size:.95rem;
+    line-height:1.5;
+    white-space:pre-line;
+}
+.alert-btn{
+    margin-top:20px;
+    padding:12px 30px;
+    background:linear-gradient(90deg,#00ff9d,#00b8ff);
+    border:none;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+.alert-btn:hover{transform:scale(1.05)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{transform:scale(.85)}to{transform:scale(1)}}
+/* ================================================ */
+        }
+    </style>
+</head>
+<body>
+<!-- MODERN ALERT -->
+<div class="alert-overlay" id="customAlert">
+  <div class="alert-box">
+    <i class="fas fa-circle-exclamation"></i>
+    <h3 id="alertTitle">Pemberitahuan</h3>
+    <p id="alertMessage"></p>
+    <button class="alert-btn" onclick="closeAlert()">OK</button>
+  </div>
+</div>
+    <!-- QRIS Modal -->
+    <div class="qris-modal" id="qrisModal">
+        <div class="qris-modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <img src="https://files.catbox.moe/f7rtxe.jpg" alt="QRIS Rapzmodz" class="qris-modal-img" loading="lazy">
+            <p style="margin-top: 20px; color: #333; font-weight: 600; font-size: 1.2rem;">Scan QR Code untuk pembayaran</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="powered-by">POWERED BY</div>
+            <div class="brand">RAPZMODZ OFFICIAL</div>
+        </div>
+        
+        <!-- Welcome Section dengan animasi -->
+        <section class="welcome-section" id="welcomeSection">
+            <div class="welcome-icon">
+                <i class="fas fa-handshake"></i>
+            </div>
+            
+            <div class="typing-container">
+                <h1 class="welcome-title">Selamat Datang di Web Payment Rapzmodz Official</h1>
+            </div>
+            
+            <p class="welcome-text">
+                Proses pembayaran yang aman, cepat, dan terpercaya. 
+                Silakan lanjutkan untuk memilih metode pembayaran yang tersedia.
+            </p>
+            
+            <button class="btn" id="startBtn">
+                <i class="fas fa-play-circle"></i> MULAI TRANSAKSI
+            </button>
+        </section>
+        
+        <!-- Payment Method Selection -->
+        <section class="payment-section" id="paymentSection">
+            <h2 class="section-title">PILIH METODE PEMBAYARAN</h2>
+            
+            <div class="payment-options">
+                <!-- Dana -->
+                <div class="payment-option" data-method="dana">
+                    <div class="payment-icon dana-icon">
+                        <i class="fas fa-money-bill"></i>
+                    </div>
+                    <div class="payment-name">DANA</div>
+                    <div class="payment-desc">Transfer via aplikasi DANA</div>
+                    <div class="payment-number">
+                        <span class="number-display">0852 - 1013 - 4643</span>
+                        <button class="copy-btn" data-number="085210134643">
+                            <i class="fas fa-copy"></i> SALIN
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- QRIS -->
+                <div class="payment-option" data-method="qris" id="qrisOption">
+                    <div class="payment-icon qris-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="payment-name">QRIS</div>
+                    <div class="payment-desc">Scan QR Code untuk bayar</div>
+                    <div class="qris-container" id="showQrisModal">
+                        <img src="https://files.catbox.moe/f7rtxe.jpg" alt="QRIS Rapzmodz" class="qris-image" loading="lazy">
+                    </div>
+                    <p style="color: #aaa; font-size: 0.85rem; margin-top: 10px;">Klik QR untuk memperbesar</p>
+                    
+                    <!-- Info Jam Kerja QRIS -->
+                    <div class="qris-time-info" id="qrisTimeInfo" style="display: none;">
+                        <p><i class="fas fa-clock"></i> <span id="currentTimeDisplay">Loading...</span></p>
+                        <p>🕘 09:00 - 23:00 WIB</p>
+                    </div>
+                </div>
+                
+                <!-- GoPay -->
+                <div class="payment-option" data-method="gopay">
+                    <div class="payment-icon gopay-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="payment-name">GOPAY</div>
+                    <div class="payment-desc">Pembayaran via GoPay</div>
+                    <div class="payment-number">
+                        <span class="number-display">0898 - 4669 - 780</span>
+                        <button class="copy-btn" data-number="08984669780">
+                            <i class="fas fa-copy"></i> SALIN
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="amount">
+                    <i class="fas fa-money-bill-wave amount-label-icon"></i>
+                    NOMINAL PEMBAYARAN (Rp)
+                </label>
+                <div class="amount-input-container">
+                    <input type="text" id="amount" placeholder="Contoh: 50000" inputmode="numeric">
+                    <span class="rp-symbol">Rp</span>
+                </div>
+                <div class="formatted-amount" id="formattedAmount"></div>
+            </div>
+            
+            <button class="btn" id="nextToConfirmBtn" disabled>
+                <i class="fas fa-check-circle"></i> KONFIRMASI PEMBAYARAN
+            </button>
+        </section>
+        
+        <!-- Confirm Section -->
+        <section class="confirm-section" id="confirmSection">
+            <div class="confirm-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            
+            <h2 class="section-title">KONFIRMASI PEMBAYARAN</h2>
+            
+            <div class="payment-summary" id="paymentSummary">
+                <!-- Summary akan diisi oleh JavaScript -->
+            </div>
+            
+            <div class="confirm-message">
+                <p><strong>Perhatian!</strong></p>
+                <p>Setelah melakukan transfer, segera konfirmasi ke Admin Rapzmodz dengan mengirimkan bukti transfer.</p>
+                <p>Klik tombol di bawah untuk langsung terhubung dengan Admin via WhatsApp.</p>
+            </div>
+            
+            <button class="btn" id="whatsappConfirmBtn">
+                <i class="fab fa-whatsapp"></i> KONFIRMASI VIA WHATSAPP
+            </button>
+        </section>
+        
+        <footer>
+            <div class="footer-powered">Powered by Rapzmodz Official</div>
+            
+            <div class="social-media">
+                <!-- Discord -->
+                <a href="https://discord.com/" target="_blank" class="social-icon discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+                
+                <!-- Telegram -->
+                <a href="https://telegram.org/" target="_blank" class="social-icon telegram">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                
+                <!-- WhatsApp -->
+                <a href="https://wa.me/628984669780" target="_blank" class="social-icon whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                
+                <!-- Instagram -->
+                <a href="https://instagram.com/" target="_blank" class="social-icon instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                
+                <!-- Twitter -->
+                <a href="https://twitter.com/" target="_blank" class="social-icon twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                
+                <!-- YouTube -->
+                <a href="https://youtube.com/" target="_blank" class="social-icon youtube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            
+            <div class="copyright">
+                © 2024 Rapzmodz Official. Semua transaksi aman dan terenkripsi.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+       /* ========= MODERN ALERT FUNCTION ========= */
+function showAlert(title, message){
+    document.getElementById('alertTitle').innerText = title;
+    document.getElementById('alertMessage').innerText = message;
+    document.getElementById('customAlert').style.display = 'flex';
+}
+function closeAlert(){
+    document.getElementById('customAlert').style.display = 'none';
+}
+        // DOM Elements
+        const startBtn = document.getElementById('startBtn');
+        const nextToConfirmBtn = document.getElementById('nextToConfirmBtn');
+        const whatsappConfirmBtn = document.getElementById('whatsappConfirmBtn');
+        const showQrisModal = document.getElementById('showQrisModal');
+        const qrisModal = document.getElementById('qrisModal');
+        const closeModal = document.getElementById('closeModal');
+        const amountInput = document.getElementById('amount');
+        const formattedAmount = document.getElementById('formattedAmount');
+        const paymentSummary = document.getElementById('paymentSummary');
+        const qrisOption = document.getElementById('qrisOption');
+        const qrisTimeInfo = document.getElementById('qrisTimeInfo');
+        const currentTimeDisplay = document.getElementById('currentTimeDisplay');
+        
+        const welcomeSection = document.getElementById('welcomeSection');
+        const paymentSection = document.getElementById('paymentSection');
+        const confirmSection = document.getElementById('confirmSection');
+        
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        
+        // WhatsApp Configuration
+        const whatsappNumber = "628984669780"; // GANTI DENGAN NOMOR ADMIN ANDA
+        const whatsappMessage = "Halo Admin Rapzmodz, saya sudah melakukan pembayaran dengan detail berikut:";
+        
+        // Jam Kerja QRIS (09:00 - 23:00 WIB)
+        const QRIS_START_HOUR = 9;   // 09:00
+        const QRIS_END_HOUR = 23;    // 23:00
+        
+        // State
+        let selectedPaymentMethod = null;
+        let paymentAmount = null;
+        let isQRISAvailable = true;
+        
+        // Format number to Indonesian format (1.000, 10.000, 100.000, etc.)
+        function formatNumber(num) {
+            if (!num) return '';
+            // Remove non-numeric characters
+            const cleanNum = num.toString().replace(/\D/g, '');
+            if (cleanNum === '') return '';
+            
+            // Format with dots as thousand separators
+            return cleanNum.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        
+        // Get current WIB time
+        function getCurrentWIBTime() {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            // WIB is UTC+7
+            const wib = new Date(utc + (3600000 * 7));
+            return wib;
+        }
+        
+        // Check if QRIS is available based on working hours
+        function checkQRISAvailability() {
+            const now = getCurrentWIBTime();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            // Format waktu untuk display
+            const hours = currentHour.toString().padStart(2, '0');
+            const minutes = currentMinute.toString().padStart(2, '0');
+            currentTimeDisplay.textContent = `Sekarang: ${hours}:${minutes} WIB`;
+            
+            // Cek apakah dalam jam kerja (09:00 - 23:00)
+            const isWithinHours = currentHour >= QRIS_START_HOUR && currentHour < QRIS_END_HOUR;
+            
+            // Tampilkan info jam kerja di QRIS option
+            qrisTimeInfo.style.display = 'block';
+            
+            if (!isWithinHours) {
+                qrisOption.classList.add('disabled');
+                isQRISAvailable = false;
+                
+                // Jika QRIS sedang dipilih, reset selection
+                if (selectedPaymentMethod === 'qris') {
+                    selectedPaymentMethod = null;
+                    paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                    checkPaymentDetails();
+                }
+            } else {
+                qrisOption.classList.remove('disabled');
+                isQRISAvailable = true;
+            }
+            
+            return isWithinHours;
+        }
+        
+        // Update waktu setiap menit
+        function updateTime() {
+            checkQRISAvailability();
+        }
+        
+        // Start Payment Process dengan animasi
+        startBtn.addEventListener('click', function() {
+            // Check QRIS availability saat masuk
+            checkQRISAvailability();
+            
+            // Animasi fade out welcome section
+            welcomeSection.style.animation = 'fadeOut 0.5s ease forwards';
+            
+            setTimeout(() => {
+                welcomeSection.style.display = 'none';
+                paymentSection.style.display = 'block';
+                
+                // Animasi fade in payment section
+                paymentSection.style.opacity = '0';
+                paymentSection.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    paymentSection.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    paymentSection.style.opacity = '1';
+                    paymentSection.style.transform = 'translateY(0)';
+                }, 50);
+            }, 500);
+        });
+        
+        // Handle amount input with formatting
+        amountInput.addEventListener('input', function() {
+            const cursorPosition = this.selectionStart;
+            const originalValue = this.value;
+            
+            // Format the number
+            const formatted = formatNumber(originalValue);
+            
+            // Update input value
+            this.value = formatted;
+            
+            // Restore cursor position
+            const diff = formatted.length - originalValue.length;
+            this.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
+            
+            // Update formatted display
+            if (formatted) {
+                paymentAmount = formatted.replace(/\./g, ''); // Store without dots
+                formattedAmount.textContent = `Rp ${formatted}`;
+                formattedAmount.style.display = 'block';
+            } else {
+                paymentAmount = null;
+                formattedAmount.style.display = 'none';
+            }
+            
+            checkPaymentDetails();
+        });
+        
+        // Allow only numbers and navigation keys
+        amountInput.addEventListener('keydown', function(e) {
+            // Allow: backspace, delete, tab, escape, enter, arrow keys
+            if ([46, 8, 9, 27, 13, 110, 190].includes(e.keyCode) ||
+                // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+            
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && 
+                (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+        
+        // Select Payment Method
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                if (this.dataset.method === 'qris') {
+                    if (!isQRISAvailable) {
+                        // ALERT SINGKAT - TANPA DETAIL WAKTU
+                        showAlert(
+  "QRIS hanya tersedia pada jam 09:00 – 23:00 WIB.\nSilakan gunakan metode pembayaran lain."
+);
+                        return;
+                    }
+                    return; // Jangan select QRIS option, karena hanya untuk popup
+                }
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedPaymentMethod = this.getAttribute('data-method');
+                checkPaymentDetails();
+            });
+        });
+        
+        // Show QRIS Modal
+        showQrisModal.addEventListener('click', function() {
+            if (!isQRISAvailable) {
+                // ALERT SINGKAT - TANPA DETAIL WAKTU
+                showAlert(
+  "QRIS hanya tersedia pada jam 09:00 – 23:00 WIB.\nSilakan gunakan metode pembayaran lain."
+);
+                return;
+            }
+            
+            qrisModal.style.display = 'flex';
+            selectedPaymentMethod = 'qris';
+            paymentOptions.forEach(opt => opt.classList.remove('selected'));
+            checkPaymentDetails();
+        });
+        
+        // Close QRIS Modal
+        closeModal.addEventListener('click', function() {
+            qrisModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside
+        qrisModal.addEventListener('click', function(e) {
+            if (e.target === qrisModal) {
+                qrisModal.style.display = 'none';
+            }
+        });
+        
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && qrisModal.style.display === 'flex') {
+                qrisModal.style.display = 'none';
+            }
+        });
+        
+        // Copy Number Functionality dengan animasi
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const number = this.getAttribute('data-number');
+                navigator.clipboard.writeText(number).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> TERKOPI';
+                    this.classList.add('copied');
+                    
+                    // Animasi smooth saat berhasil copy
+                    this.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Gagal menyalin: ', err);
+                    alert('Gagal menyalin nomor');
+                });
+            });
+        });
+        
+        // Check Payment Details
+        function checkPaymentDetails() {
+            if (selectedPaymentMethod && paymentAmount && parseInt(paymentAmount) >= 1000) {
+                nextToConfirmBtn.disabled = false;
+                nextToConfirmBtn.style.opacity = "1";
+                nextToConfirmBtn.style.transform = "scale(1.05)";
+                setTimeout(() => {
+                    nextToConfirmBtn.style.transform = "scale(1)";
+                }, 200);
+            } else {
+                nextToConfirmBtn.disabled = true;
+                nextToConfirmBtn.style.opacity = "0.7";
+            }
+        }
+        
+        // Go to Confirm Section dengan animasi
+        nextToConfirmBtn.addEventListener('click', function() {
+            // Update payment summary
+            updatePaymentSummary();
+            
+            // Animasi fade out payment section
+            paymentSection.style.opacity = "1";
+            paymentSection.style.transform = "translateY(0)";
+            
+            paymentSection.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            paymentSection.style.opacity = "0";
+            paymentSection.style.transform = "translateY(-20px)";
+            
+            setTimeout(() => {
+                paymentSection.style.display = 'none';
+                confirmSection.style.display = 'block';
+                
+                // Animasi fade in confirm section
+                confirmSection.style.opacity = "0";
+                confirmSection.style.transform = "translateY(20px)";
+                setTimeout(() => {
+                    confirmSection.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+                    confirmSection.style.opacity = "1";
+                    confirmSection.style.transform = "translateY(0)";
+                }, 50);
+            }, 500);
+        });
+        
+        // Update Payment Summary
+        function updatePaymentSummary() {
+            const methodNames = {
+                'dana': 'DANA',
+                'qris': 'QRIS',
+                'gopay': 'GoPay'
+            };
+            
+            const paymentNumbers = {
+                'dana': '0852-1013-4643',
+                'gopay': '0898-4669-780',
+                'qris': 'Scan QR Code'
+            };
+            
+            const formattedAmountDisplay = formatNumber(paymentAmount);
+            
+            paymentSummary.innerHTML = `
+                <div class="summary-item">
+                    <span class="summary-label">Metode Pembayaran:</span>
+                    <span class="summary-value">${methodNames[selectedPaymentMethod]}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Nomor/Tujuan:</span>
+                    <span class="summary-value">${paymentNumbers[selectedPaymentMethod]}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Jumlah Transfer:</span>
+                    <span class="summary-value">Rp ${formattedAmountDisplay}</span>
+                </div>
+            `;
+            
+            // Set WhatsApp link for confirm button
+            let paymentInfo = `Metode: ${methodNames[selectedPaymentMethod]}`;
+            
+            if (selectedPaymentMethod === 'dana' || selectedPaymentMethod === 'gopay') {
+                paymentInfo += ` (${paymentNumbers[selectedPaymentMethod]})`;
+            }
+            
+            const formattedMessage = `${whatsappMessage}%0A%0A` +
+                                    `${paymentInfo}%0A` +
+                                    `Jumlah: Rp ${formattedAmountDisplay}%0A%0A` +
+                                    `Mohon konfirmasi pesanan saya.`;
+            
+            whatsappConfirmBtn.onclick = function() {
+                window.open(`https://wa.me/${whatsappNumber}?text=${formattedMessage}`, '_blank');
+            };
+        }
+        
+        // Pre-fill amount from URL if exists
+        const urlParams = new URLSearchParams(window.location.search);
+        const amountParam = urlParams.get('amount');
+        if (amountParam && !isNaN(amountParam)) {
+            amountInput.value = formatNumber(amountParam);
+            paymentAmount = amountParam.replace(/\./g, '');
+            formattedAmount.textContent = `Rp ${formatNumber(amountParam)}`;
+            formattedAmount.style.display = 'block';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check QRIS availability saat page load
+            checkQRISAvailability();
+            
+            // Update waktu setiap 1 menit
+            setInterval(updateTime, 60000);
+        });
+    </script>
+</body>
+</html>
